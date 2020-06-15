@@ -36,7 +36,8 @@ public class SpringBootFrankGarageApplicationTests {
 	public void shouldReturnRepositoryIndex() throws Exception {
 
 		mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
-			.andExpect(jsonPath("$._links.cars").exists());
+			.andExpect(jsonPath("$._links.cars").exists())
+			.andExpect(jsonPath("$._links.items").exists());
 	}
 
 	@Test
@@ -47,4 +48,31 @@ public class SpringBootFrankGarageApplicationTests {
 						status().isCreated()).andExpect(
 								header().string("Location", containsString("cars")));
 	}
+
+	/*@Test
+	public void shouldRetrieveEntity() throws Exception {
+
+		MvcResult mvcResult = mockMvc.perform(post("/cars").content(
+				"{\"vehicleId\": \"1\", \"warehouseId\":\"1\"}")).andExpect(
+						status().isCreated()).andReturn();
+
+		String location = mvcResult.getResponse().getHeader("Location");
+		mockMvc.perform(get(location)).andExpect(status().isOk()).andExpect(
+				jsonPath("$.vehicleId").value("1")).andExpect(
+						jsonPath("$.warehouseId").value("1"));
+	}*/
+
+	/*@Test
+	public void shouldQueryEntity() throws Exception {
+
+		mockMvc.perform(post("/cars").content(
+				"{ \"vehicleId\": 1, \"warehouseId\":1}")).andExpect(
+						status().isCreated());
+
+		mockMvc.perform(
+				get("/cars/1")).andExpect(
+						status().isOk()).andExpect(
+								jsonPath("$._embedded.cars[0].vehicleId").value(
+										1));
+	}*/
 }
